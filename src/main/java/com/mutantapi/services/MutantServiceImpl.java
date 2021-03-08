@@ -1,6 +1,8 @@
 package com.mutantapi.services;
 
+import com.mutantapi.enumns.MutantEnum;
 import com.mutantapi.interfaces.MutantInterface;
+import com.mutantapi.response.ResponseMutant;
 import com.mutantapi.utils.JsonUtil;
 
 import java.util.ArrayList;
@@ -13,11 +15,17 @@ public class MutantServiceImpl implements MutantInterface {
     private String[] lettersDna = {"A", "T", "G", "C"};
 
     @Override
-    public boolean validateMutant(final String dna) throws Exception {
+    public ResponseMutant validateMutant(final String dna) throws Exception {
 
         List<List<String>> matrix = convertToMatrix(dna);
         boolean isMutant = this.isMutant(matrix);
-        return isMutant;
+        ResponseMutant res = new ResponseMutant();
+        res.setMutant(isMutant);
+        res.setDescription(MutantEnum.DESC_MUTANT.getName());
+        if(!isMutant){
+            res.setDescription(MutantEnum.DESC_HUMAN.getName());
+        }
+        return res;
     }
 
     @Override

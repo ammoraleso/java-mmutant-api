@@ -14,10 +14,11 @@ public class MutantRouter extends GeneralRouter {
     public MutantRouter(MutantServiceImpl mutantService) {
         post("/mutant", (req, res) -> {
             try {
-                boolean isMutant = mutantService.validateMutant(req.body());
-                final ResponseMutant response = new ResponseMutant();
-                response.setMutant(isMutant);
-                return response;
+                final ResponseMutant responseMutant = mutantService.validateMutant(req.body());
+                if(!responseMutant.isMutant()){
+                    res.status(401);
+                }
+                return responseMutant;
             } catch (Exception ex) {
                 res.status(400);
                 final ResponseError responseError = new ResponseError(ex);
