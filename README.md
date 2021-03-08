@@ -127,7 +127,7 @@ Request body (caso ADN mutante):
 
 ```
     {
-        "dna":["ATGCGA", "CAGTGC", "TTATTT", "CGACGG", "GCGTCA", "TCACTG"]
+       "dna":["ATGCGA","CAGTGC","TTATGT","AGAAGG","CCCCTA","TCACTG"]
     }
 ```
 
