@@ -1,21 +1,28 @@
 package com.mutantapi.router;
 
 import com.mutantapi.enumns.MutantEnum;
-import com.mutantapi.utils.JsonUtil;
+import com.mutantapi.handlererror.ResponseError;
+import com.mutantapi.response.ResponseMutant;
+import com.mutantapi.services.MutantServiceImpl;
 
 import static com.mutantapi.utils.JsonUtil.json;
-import static spark.Spark.get;
+import static com.mutantapi.utils.JsonUtil.toJson;
+import static spark.Spark.*;
 
 public class MutantRouter extends GeneralRouter {
 
-    public MutantRouter() {
-        get("/mutant", (req, res) -> {
+    public MutantRouter(MutantServiceImpl mutantService) {
+        post("/mutant", (req, res) -> {
             try {
-                final String dna = req.body();
+                boolean isMutant = mutantService.validateMutant(req.body());
+                final ResponseMutant response = new ResponseMutant();
+                response.setMutant(isMutant);
+                return response;
             } catch (Exception ex) {
-
+                res.status(400);
+                final ResponseError responseError = new ResponseError(ex);
+                return responseError;
             }
-            return null;
         }, json());
     }
 }
