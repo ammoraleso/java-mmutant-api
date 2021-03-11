@@ -1,5 +1,7 @@
 package com.mutantapi.services;
 
+import com.mutantapi.database.DnaDao;
+import com.mutantapi.dto.DnaDTO;
 import com.mutantapi.enumns.MutantEnum;
 import com.mutantapi.interfaces.MutantInterface;
 import com.mutantapi.response.ResponseMutant;
@@ -14,11 +16,23 @@ public class MutantServiceImpl implements MutantInterface {
     private static int counterSequence = 0;
     private String[] lettersDna = {"A", "T", "G", "C"};
 
+    private DnaDao dnaDao;
+
+    public MutantServiceImpl() {
+        this.dnaDao = new DnaDao();
+    }
+
     @Override
     public ResponseMutant validateMutant(final String dna) throws Exception {
-
-        List<List<String>> matrix = convertToMatrix(dna);
+        final List<List<String>> matrix = convertToMatrix(dna);
         boolean isMutant = this.isMutant(matrix);
+        final ResponseMutant res = createResp(isMutant);
+        final DnaDTO dnaDTO = new DnaDTO(JsonUtil.formatDnaString(dna), isMutant);
+        dnaDao.add(dnaDTO);
+        return res;
+    }
+
+    private ResponseMutant createResp(boolean isMutant) {
         ResponseMutant res = new ResponseMutant();
         res.setMutant(isMutant);
         res.setDescription(MutantEnum.DESC_MUTANT.getName());

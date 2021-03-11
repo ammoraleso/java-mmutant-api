@@ -26,11 +26,10 @@ Ejercicio práctico para MercadoLibre.
 
 ### Implementacion y tecnologias usadas
 
-- [NodeJs](https://nodejs.org/es/)
+- [Java](https://nodejs.org/es/)
 - [MongoDB](https://www.mongodb.com)
-- [Jest](https://www.npmjs.com/package/jest)
-- [Winston](https://www.npmjs.com/package/winston)
-- [Express](https://www.npmjs.com/package/express)
+- [Junit](https://www.npmjs.com/package/jest)
+- [Spark](https://www.npmjs.com/package/express)
 - [Swagger-ui-express](https://www.npmjs.com/package/swagger-ui-express)
 
 ### Comentarios
