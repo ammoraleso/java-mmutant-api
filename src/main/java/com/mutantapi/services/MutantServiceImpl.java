@@ -17,9 +17,11 @@ public class MutantServiceImpl implements MutantInterface {
     private String[] lettersDna = {"A", "T", "G", "C"};
 
     private DnaDao dnaDao;
+    private StateServiceImpl stateService;
 
     public MutantServiceImpl() {
         this.dnaDao = new DnaDao();
+        this.stateService = new StateServiceImpl();
     }
 
     @Override
@@ -27,7 +29,8 @@ public class MutantServiceImpl implements MutantInterface {
         final List<List<String>> matrix = convertToMatrix(dna);
         boolean isMutant = this.isMutant(matrix);
         final ResponseMutant res = createResp(isMutant);
-        final DnaDTO dnaDTO = new DnaDTO(JsonUtil.formatDnaString(dna), isMutant);
+        final DnaDTO dnaDTO = new DnaDTO(JsonUtil.formatDnaString(dna), isMutant ? 1 : 0);
+        stateService.saveStats(JsonUtil.formatDnaString(dna),isMutant);
         dnaDao.add(dnaDTO);
         return res;
     }

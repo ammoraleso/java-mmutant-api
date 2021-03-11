@@ -3,9 +3,12 @@ package com.mutantapi.dto;
 public class DnaDTO {
 
     private String dna;
-    private boolean isMutant;
+    private int isMutant;
 
-    public DnaDTO(final String dna,final boolean isMutant) {
+    public DnaDTO() {
+    }
+
+    public DnaDTO(final String dna, final int isMutant) {
         this.dna = dna;
         this.isMutant = isMutant;
     }
@@ -18,11 +21,11 @@ public class DnaDTO {
         this.dna = dna;
     }
 
-    public boolean isMutant() {
+    public int getIsMutant() {
         return isMutant;
     }
 
-    public void setMutant(boolean mutant) {
-        isMutant = mutant;
+    public void setIsMutant(int isMutant) {
+        this.isMutant = isMutant;
     }
 }
