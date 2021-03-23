@@ -4,6 +4,8 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.UpdateOptions;
 import com.mutantapi.dto.StatsDTO;
+import com.mutantapi.enumns.MutantEnum;
+
 import org.bson.Document;
 import org.bson.conversions.Bson;
 
@@ -16,7 +18,7 @@ public class StatsDao extends AbstractDao<StatsDTO> {
     @Override
     public StatsDTO add(final StatsDTO statsDTO){
         try {
-            final Bson filter = Filters.eq("id_stats", statsDTO.getId_stats());
+            final Bson filter = Filters.eq(MutantEnum.ID_STATS.getName(), statsDTO.getId_stats());
             final Bson update =  createDocument(statsDTO);
             final UpdateOptions options = new UpdateOptions().upsert(true);
             database.getCollection("stats")

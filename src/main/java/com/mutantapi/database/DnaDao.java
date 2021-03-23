@@ -1,10 +1,7 @@
 package com.mutantapi.database;
 
-import com.mongodb.BasicDBObject;
 import com.mongodb.client.MongoCollection;
-import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.UpdateOptions;
-import com.mongodb.client.result.UpdateResult;
 import com.mutantapi.dto.DnaDTO;
 import org.bson.Document;
 import org.bson.conversions.Bson;
@@ -37,8 +34,6 @@ public class DnaDao extends AbstractDao<DnaDTO> {
     }
 
     public DnaDTO findDna(final String dna) {
-
-        final DnaDTO dnaDTO = dnaCollection.find(eq("dna",dna)).first();
-        return dnaDTO;
+        return dnaCollection.find(eq("dna",dna)).first();
     }
 }

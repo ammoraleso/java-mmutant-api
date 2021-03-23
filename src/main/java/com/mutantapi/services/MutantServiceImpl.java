@@ -13,8 +13,8 @@ import java.util.List;
 
 public class MutantServiceImpl implements MutantInterface {
 
-    private static int counterSequence = 0;
-    private String[] lettersDna = {"A", "T", "G", "C"};
+    private int counterSequence = 0;
+    private String[] lettersDna = { "A", "T", "G", "C" };
 
     private DnaDao dnaDao;
     private StateServiceImpl stateService;
@@ -30,7 +30,7 @@ public class MutantServiceImpl implements MutantInterface {
         boolean isMutant = this.isMutant(matrix);
         final ResponseMutant res = createResp(isMutant);
         final DnaDTO dnaDTO = new DnaDTO(JsonUtil.formatDnaString(dna), isMutant ? 1 : 0);
-        stateService.saveStats(JsonUtil.formatDnaString(dna),isMutant);
+        stateService.saveStats(JsonUtil.formatDnaString(dna), isMutant);
         dnaDao.add(dnaDTO);
         return res;
     }
@@ -39,7 +39,7 @@ public class MutantServiceImpl implements MutantInterface {
         ResponseMutant res = new ResponseMutant();
         res.setMutant(isMutant);
         res.setDescription(MutantEnum.DESC_MUTANT.getName());
-        if(!isMutant){
+        if (!isMutant) {
             res.setDescription(MutantEnum.DESC_HUMAN.getName());
         }
         return res;
@@ -52,16 +52,15 @@ public class MutantServiceImpl implements MutantInterface {
             getLinesWithSequence(matrix, i);
         }
         ;
-        boolean isMutant = counterSequence > 1 ? true : false;
-        return isMutant;
+        return counterSequence > 1;
     }
 
-    private static void getLinesWithSequence(final List<List<String>> matrix, final int index) {
+    private void getLinesWithSequence(final List<List<String>> matrix, final int index) {
         getDiagCount(matrix, index);
         getRowColCount(matrix, index);
     }
 
-    private static void getDiagCount(final List<List<String>> matrix, final int index) {
+    private void getDiagCount(final List<List<String>> matrix, final int index) {
         int restDiag = 0;
         int counterSupDerSeq = 0;
         int counterSupIzqSeq = 0;
@@ -76,37 +75,24 @@ public class MutantServiceImpl implements MutantInterface {
             if (counterSequence > 1) {
                 return;
             }
-            if (
-                    restDiag < 4 &&
-                            counterSupDerSeq == 0 &&
-                            counterSupIzqSeq == 0 &&
-                            counterInfDerSeq == 0 &&
-                            counterInfIzqSeq == 0
-            ) {
+            if (restDiag < 4 && counterSupDerSeq == 0 && counterSupIzqSeq == 0 && counterInfDerSeq == 0
+                    && counterInfIzqSeq == 0) {
                 break;
             }
-            counterSupDerSeq =
-                    matrix.get(i).get(i + index).equals(matrix.get(i + 1).get(i + index + 1))
-                            ? counterSupDerSeq + 1
-                            : 0;
+            counterSupDerSeq = matrix.get(i).get(i + index).equals(matrix.get(i + 1).get(i + index + 1))
+                    ? counterSupDerSeq + 1
+                    : 0;
 
-            counterSupIzqSeq =
-                    matrix.get(i).get(matrix.size() - index - i - 1).equals(
-                            matrix.get(i + 1).get(matrix.size() - index - i - 2))
-                            ? counterSupIzqSeq + 1
-                            : 0;
+            counterSupIzqSeq = matrix.get(i).get(matrix.size() - index - i - 1)
+                    .equals(matrix.get(i + 1).get(matrix.size() - index - i - 2)) ? counterSupIzqSeq + 1 : 0;
 
             if (index > 0) {
-                counterInfDerSeq =
-                        matrix.get(i + index).get(i).equals(matrix.get(i + 1 + index).get(i + 1))
-                                ? counterInfDerSeq + 1
-                                : 0;
+                counterInfDerSeq = matrix.get(i + index).get(i).equals(matrix.get(i + 1 + index).get(i + 1))
+                        ? counterInfDerSeq + 1
+                        : 0;
 
-                counterInfIzqSeq =
-                        matrix.get(i + index).get(matrix.size() - i - 1).equals(
-                                matrix.get(i + index + 1).get(matrix.size() - i - 2))
-                                ? counterInfIzqSeq + 1
-                                : 0;
+                counterInfIzqSeq = matrix.get(i + index).get(matrix.size() - i - 1)
+                        .equals(matrix.get(i + index + 1).get(matrix.size() - i - 2)) ? counterInfIzqSeq + 1 : 0;
             }
 
             if (counterSupDerSeq == 3) {
@@ -129,7 +115,7 @@ public class MutantServiceImpl implements MutantInterface {
         }
     }
 
-    private static void getRowColCount(final List<List<String>> matrix, final int index) {
+    private void getRowColCount(final List<List<String>> matrix, final int index) {
         int counterColumn = 0;
         int counterRow = 0;
         int rest = 0;
@@ -147,12 +133,11 @@ public class MutantServiceImpl implements MutantInterface {
                 break;
             }
 
-            counterColumn =
-                    matrix.get(i).get(index).equals(matrix.get(i + 1).get(index)) ? counterColumn + 1 : 0;
-            counterRow =
-                    matrix.get(index).get(i).equals(matrix.get(index).get(i + 1)) ? counterRow + 1 : 0;
+            counterColumn = matrix.get(i).get(index).equals(matrix.get(i + 1).get(index)) ? counterColumn + 1 : 0;
+            counterRow = matrix.get(index).get(i).equals(matrix.get(index).get(i + 1)) ? counterRow + 1 : 0;
 
-            //Because if counterColum or CounterRow are 3 is becase it have the same letters in 4 positions
+            // Because if counterColum or CounterRow are 3 is becase it have the same
+            // letters in 4 positions
             if (counterColumn == 3) {
                 counterColumn = 0;
                 counterSequence++;
@@ -164,15 +149,14 @@ public class MutantServiceImpl implements MutantInterface {
         }
     }
 
-
     private List<List<String>> convertToMatrix(final String dna) throws Exception {
         final String dnaToMatrix = JsonUtil.formatDnaString(dna);
 
         final String[] vector = dnaToMatrix.split(",");
-        final List matrix = new ArrayList();
+        final List<List<String>> matrix = new ArrayList<>();
 
         Arrays.stream(vector).forEach(line -> {
-            //Validate if is NXN Matrix
+            // Validate if is NXN Matrix
             if (vector.length != line.trim().length()) {
                 throw new IllegalArgumentException("Length of Matrix and elements are not equal");
             }

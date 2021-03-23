@@ -2,11 +2,12 @@ package com.mutantapi.utils;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import org.eclipse.jetty.util.StringUtil;
 import spark.ResponseTransformer;
-import spark.utils.StringUtils;
 
 public class JsonUtil {
+
+	private JsonUtil() {
+	}
 
 	public static String toJson(Object object) {
 		return new Gson().toJson(object);
@@ -16,18 +17,18 @@ public class JsonUtil {
 		return JsonUtil::toJson;
 	}
 
-	public static String formatDnaString(String body ){
+	public static String formatDnaString(String body) {
 		JsonObject jsonObject = new Gson().fromJson(body, JsonObject.class);
-		if(jsonObject == null || jsonObject.toString().equals("")){
+		if (jsonObject == null || jsonObject.toString().equals("")) {
 			throw new IllegalArgumentException("Dna is required and can´t be an empty array");
 		}
-		try{
+		try {
 			String result = jsonObject.get("dna").toString();
-			result = result.replace("[","");
-			result = result.replace("]","");
-			result = result.replace('"','\0');
+			result = result.replace("[", "");
+			result = result.replace("]", "");
+			result = result.replace('"', '\0');
 			return result;
-		}catch (Exception e){
+		} catch (Exception e) {
 			throw new IllegalArgumentException("Dna is required and can´t be an empty array");
 		}
 	}

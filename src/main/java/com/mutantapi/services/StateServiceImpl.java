@@ -4,14 +4,6 @@ import com.mutantapi.database.DnaDao;
 import com.mutantapi.database.StatsDao;
 import com.mutantapi.dto.DnaDTO;
 import com.mutantapi.dto.StatsDTO;
-import com.mutantapi.enumns.MutantEnum;
-import com.mutantapi.interfaces.MutantInterface;
-import com.mutantapi.response.ResponseMutant;
-import com.mutantapi.utils.JsonUtil;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 public class StateServiceImpl {
 
